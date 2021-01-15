@@ -30,16 +30,9 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MusicRecognizerForm));
-            this.cmdRecord = new System.Windows.Forms.Button();
-            this.cmdStop = new System.Windows.Forms.Button();
             this.lblMeterIn = new System.Windows.Forms.Label();
             this.lblMeter = new System.Windows.Forms.Label();
             this.tmrMeterIn = new System.Windows.Forms.Timer(this.components);
-            this.grpDestinationFile = new System.Windows.Forms.GroupBox();
-            this.lblSizeIn = new System.Windows.Forms.Label();
-            this.lblTimeIn = new System.Windows.Forms.Label();
-            this.lblSize = new System.Windows.Forms.Label();
-            this.lblTime = new System.Windows.Forms.Label();
             this.lblDestinationFile = new System.Windows.Forms.Label();
             this.grpID3Tags = new System.Windows.Forms.GroupBox();
             this.recognizeButton = new System.Windows.Forms.Button();
@@ -75,31 +68,17 @@
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
-            this.grpDestinationFile.SuspendLayout();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.songArtworkOutput = new System.Windows.Forms.PictureBox();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.grpID3Tags.SuspendLayout();
             this.grpDestination.SuspendLayout();
             this.trayMenuStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.songArtworkOutput)).BeginInit();
             this.SuspendLayout();
-            // 
-            // cmdRecord
-            // 
-            this.cmdRecord.Location = new System.Drawing.Point(28, 23);
-            this.cmdRecord.Name = "cmdRecord";
-            this.cmdRecord.Size = new System.Drawing.Size(99, 23);
-            this.cmdRecord.TabIndex = 23;
-            this.cmdRecord.Text = "Record";
-            this.cmdRecord.UseVisualStyleBackColor = true;
-            this.cmdRecord.Click += new System.EventHandler(this.cmdRecord_Click);
-            // 
-            // cmdStop
-            // 
-            this.cmdStop.Location = new System.Drawing.Point(28, 52);
-            this.cmdStop.Name = "cmdStop";
-            this.cmdStop.Size = new System.Drawing.Size(99, 23);
-            this.cmdStop.TabIndex = 25;
-            this.cmdStop.Text = "Stop";
-            this.cmdStop.UseVisualStyleBackColor = true;
-            this.cmdStop.Click += new System.EventHandler(this.cmdStop_Click);
             // 
             // lblMeterIn
             // 
@@ -115,60 +94,6 @@
             this.lblMeter.Size = new System.Drawing.Size(100, 23);
             this.lblMeter.TabIndex = 88;
             // 
-            // grpDestinationFile
-            // 
-            this.grpDestinationFile.BackColor = System.Drawing.SystemColors.Control;
-            this.grpDestinationFile.Controls.Add(this.lblSizeIn);
-            this.grpDestinationFile.Controls.Add(this.lblTimeIn);
-            this.grpDestinationFile.Controls.Add(this.lblSize);
-            this.grpDestinationFile.Controls.Add(this.lblTime);
-            this.grpDestinationFile.Controls.Add(this.cmdRecord);
-            this.grpDestinationFile.Controls.Add(this.cmdStop);
-            this.grpDestinationFile.Location = new System.Drawing.Point(462, 200);
-            this.grpDestinationFile.Name = "grpDestinationFile";
-            this.grpDestinationFile.Size = new System.Drawing.Size(346, 88);
-            this.grpDestinationFile.TabIndex = 76;
-            this.grpDestinationFile.TabStop = false;
-            this.grpDestinationFile.Text = "Controls";
-            // 
-            // lblSizeIn
-            // 
-            this.lblSizeIn.AutoSize = true;
-            this.lblSizeIn.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.lblSizeIn.Location = new System.Drawing.Point(222, 51);
-            this.lblSizeIn.Name = "lblSizeIn";
-            this.lblSizeIn.Size = new System.Drawing.Size(17, 18);
-            this.lblSizeIn.TabIndex = 84;
-            this.lblSizeIn.Text = "0";
-            // 
-            // lblTimeIn
-            // 
-            this.lblTimeIn.AutoSize = true;
-            this.lblTimeIn.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.lblTimeIn.Location = new System.Drawing.Point(222, 23);
-            this.lblTimeIn.Name = "lblTimeIn";
-            this.lblTimeIn.Size = new System.Drawing.Size(72, 18);
-            this.lblTimeIn.TabIndex = 86;
-            this.lblTimeIn.Text = "00:00:00";
-            // 
-            // lblSize
-            // 
-            this.lblSize.AutoSize = true;
-            this.lblSize.Location = new System.Drawing.Point(183, 57);
-            this.lblSize.Name = "lblSize";
-            this.lblSize.Size = new System.Drawing.Size(30, 13);
-            this.lblSize.TabIndex = 83;
-            this.lblSize.Text = "Size:";
-            // 
-            // lblTime
-            // 
-            this.lblTime.AutoSize = true;
-            this.lblTime.Location = new System.Drawing.Point(180, 28);
-            this.lblTime.Name = "lblTime";
-            this.lblTime.Size = new System.Drawing.Size(33, 13);
-            this.lblTime.TabIndex = 85;
-            this.lblTime.Text = "Time:";
-            // 
             // lblDestinationFile
             // 
             this.lblDestinationFile.BackColor = System.Drawing.Color.White;
@@ -182,6 +107,11 @@
             // grpID3Tags
             // 
             this.grpID3Tags.BackColor = System.Drawing.SystemColors.Control;
+            this.grpID3Tags.Controls.Add(this.songArtworkOutput);
+            this.grpID3Tags.Controls.Add(this.label3);
+            this.grpID3Tags.Controls.Add(this.textBox2);
+            this.grpID3Tags.Controls.Add(this.label2);
+            this.grpID3Tags.Controls.Add(this.textBox1);
             this.grpID3Tags.Controls.Add(this.recognizeButton);
             this.grpID3Tags.Controls.Add(this.lblTagComment);
             this.grpID3Tags.Controls.Add(this.songTitleOutput);
@@ -195,14 +125,15 @@
             this.grpID3Tags.Controls.Add(this.songArtistOutput);
             this.grpID3Tags.Location = new System.Drawing.Point(462, 12);
             this.grpID3Tags.Name = "grpID3Tags";
-            this.grpID3Tags.Size = new System.Drawing.Size(346, 166);
+            this.grpID3Tags.Size = new System.Drawing.Size(346, 309);
             this.grpID3Tags.TabIndex = 78;
             this.grpID3Tags.TabStop = false;
             this.grpID3Tags.Text = "Recognized Song";
+            this.grpID3Tags.Enter += new System.EventHandler(this.grpID3Tags_Enter);
             // 
             // recognizeButton
             // 
-            this.recognizeButton.Location = new System.Drawing.Point(19, 130);
+            this.recognizeButton.Location = new System.Drawing.Point(25, 271);
             this.recognizeButton.Name = "recognizeButton";
             this.recognizeButton.Size = new System.Drawing.Size(74, 23);
             this.recognizeButton.TabIndex = 79;
@@ -213,7 +144,7 @@
             // lblTagComment
             // 
             this.lblTagComment.AutoSize = true;
-            this.lblTagComment.Location = new System.Drawing.Point(14, 82);
+            this.lblTagComment.Location = new System.Drawing.Point(20, 170);
             this.lblTagComment.Name = "lblTagComment";
             this.lblTagComment.Size = new System.Drawing.Size(58, 13);
             this.lblTagComment.TabIndex = 76;
@@ -223,7 +154,7 @@
             // 
             this.songTitleOutput.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
             this.songTitleOutput.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
-            this.songTitleOutput.Location = new System.Drawing.Point(17, 44);
+            this.songTitleOutput.Location = new System.Drawing.Point(23, 132);
             this.songTitleOutput.Name = "songTitleOutput";
             this.songTitleOutput.Size = new System.Drawing.Size(98, 20);
             this.songTitleOutput.TabIndex = 14;
@@ -231,7 +162,7 @@
             // lblTagTrackNum
             // 
             this.lblTagTrackNum.AutoSize = true;
-            this.lblTagTrackNum.Location = new System.Drawing.Point(222, 28);
+            this.lblTagTrackNum.Location = new System.Drawing.Point(228, 116);
             this.lblTagTrackNum.Name = "lblTagTrackNum";
             this.lblTagTrackNum.Size = new System.Drawing.Size(36, 13);
             this.lblTagTrackNum.TabIndex = 75;
@@ -240,7 +171,7 @@
             // lblTagTitle
             // 
             this.lblTagTitle.AutoSize = true;
-            this.lblTagTitle.Location = new System.Drawing.Point(14, 28);
+            this.lblTagTitle.Location = new System.Drawing.Point(20, 116);
             this.lblTagTitle.Name = "lblTagTitle";
             this.lblTagTitle.Size = new System.Drawing.Size(27, 13);
             this.lblTagTitle.TabIndex = 66;
@@ -248,14 +179,14 @@
             // 
             // songAlbumOutput
             // 
-            this.songAlbumOutput.Location = new System.Drawing.Point(225, 44);
+            this.songAlbumOutput.Location = new System.Drawing.Point(231, 132);
             this.songAlbumOutput.Name = "songAlbumOutput";
             this.songAlbumOutput.Size = new System.Drawing.Size(98, 20);
             this.songAlbumOutput.TabIndex = 16;
             // 
             // songLinkOutput
             // 
-            this.songLinkOutput.Location = new System.Drawing.Point(121, 98);
+            this.songLinkOutput.Location = new System.Drawing.Point(127, 186);
             this.songLinkOutput.Name = "songLinkOutput";
             this.songLinkOutput.Size = new System.Drawing.Size(202, 20);
             this.songLinkOutput.TabIndex = 18;
@@ -263,23 +194,24 @@
             // lblTagYear
             // 
             this.lblTagYear.AutoSize = true;
-            this.lblTagYear.Location = new System.Drawing.Point(118, 82);
+            this.lblTagYear.Location = new System.Drawing.Point(124, 170);
             this.lblTagYear.Name = "lblTagYear";
-            this.lblTagYear.Size = new System.Drawing.Size(27, 13);
+            this.lblTagYear.Size = new System.Drawing.Size(55, 13);
             this.lblTagYear.TabIndex = 68;
-            this.lblTagYear.Text = "Link";
+            this.lblTagYear.Text = "Lis.tn Link";
             // 
             // songTimestampOutput
             // 
-            this.songTimestampOutput.Location = new System.Drawing.Point(19, 98);
+            this.songTimestampOutput.Location = new System.Drawing.Point(25, 186);
             this.songTimestampOutput.Name = "songTimestampOutput";
             this.songTimestampOutput.Size = new System.Drawing.Size(96, 20);
             this.songTimestampOutput.TabIndex = 17;
+            this.songTimestampOutput.TextChanged += new System.EventHandler(this.songTimestampOutput_TextChanged);
             // 
             // lblTagAlbum
             // 
             this.lblTagAlbum.AutoSize = true;
-            this.lblTagAlbum.Location = new System.Drawing.Point(118, 28);
+            this.lblTagAlbum.Location = new System.Drawing.Point(124, 116);
             this.lblTagAlbum.Name = "lblTagAlbum";
             this.lblTagAlbum.Size = new System.Drawing.Size(30, 13);
             this.lblTagAlbum.TabIndex = 71;
@@ -287,7 +219,7 @@
             // 
             // songArtistOutput
             // 
-            this.songArtistOutput.Location = new System.Drawing.Point(121, 44);
+            this.songArtistOutput.Location = new System.Drawing.Point(127, 132);
             this.songArtistOutput.Name = "songArtistOutput";
             this.songArtistOutput.Size = new System.Drawing.Size(98, 20);
             this.songArtistOutput.TabIndex = 15;
@@ -312,10 +244,10 @@
             this.grpDestination.Controls.Add(this.cboAudioSource);
             this.grpDestination.Location = new System.Drawing.Point(12, 12);
             this.grpDestination.Name = "grpDestination";
-            this.grpDestination.Size = new System.Drawing.Size(410, 276);
+            this.grpDestination.Size = new System.Drawing.Size(410, 309);
             this.grpDestination.TabIndex = 79;
             this.grpDestination.TabStop = false;
-            this.grpDestination.Text = "Destination";
+            this.grpDestination.Text = "Audio Settings";
             // 
             // lblRecorderMode
             // 
@@ -459,12 +391,13 @@
             // 
             this.trayMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem1,
+            this.toolStripSeparator2,
             this.recognizeCurrentToolStripMenuItem,
             this.toolStripMenuItem2,
             this.toolStripSeparator1,
             this.toolStripMenuItem3});
             this.trayMenuStrip.Name = "trayMenuStrip";
-            this.trayMenuStrip.Size = new System.Drawing.Size(181, 120);
+            this.trayMenuStrip.Size = new System.Drawing.Size(181, 126);
             // 
             // toolStripMenuItem1
             // 
@@ -498,15 +431,62 @@
             this.toolStripMenuItem3.Text = "Quit";
             this.toolStripMenuItem3.Click += new System.EventHandler(this.toolStripMenuItem3_Click);
             // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(25, 239);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(96, 20);
+            this.textBox1.TabIndex = 80;
+            this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(22, 223);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(33, 13);
+            this.label2.TabIndex = 81;
+            this.label2.Text = "Label";
+            this.label2.Click += new System.EventHandler(this.label2_Click);
+            // 
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(127, 239);
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(202, 20);
+            this.textBox2.TabIndex = 82;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(124, 223);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(61, 13);
+            this.label3.TabIndex = 83;
+            this.label3.Text = "Spotify URI";
+            // 
+            // songArtworkOutput
+            // 
+            this.songArtworkOutput.BackColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.songArtworkOutput.Location = new System.Drawing.Point(25, 19);
+            this.songArtworkOutput.Name = "songArtworkOutput";
+            this.songArtworkOutput.Size = new System.Drawing.Size(304, 85);
+            this.songArtworkOutput.TabIndex = 84;
+            this.songArtworkOutput.TabStop = false;
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
+            // 
             // MusicRecognizerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(820, 300);
+            this.ClientSize = new System.Drawing.Size(820, 333);
             this.Controls.Add(this.grpDestination);
             this.Controls.Add(this.grpID3Tags);
-            this.Controls.Add(this.grpDestinationFile);
             this.Controls.Add(this.lblMeter);
             this.Controls.Add(this.lblMeterIn);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
@@ -518,24 +498,20 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.frmAudioRecorder_FormClosing);
             this.Load += new System.EventHandler(this.frmAudioRecorder_Load);
             this.Resize += new System.EventHandler(this.MusicRecognizer_Resize);
-            this.grpDestinationFile.ResumeLayout(false);
-            this.grpDestinationFile.PerformLayout();
             this.grpID3Tags.ResumeLayout(false);
             this.grpID3Tags.PerformLayout();
             this.grpDestination.ResumeLayout(false);
             this.grpDestination.PerformLayout();
             this.trayMenuStrip.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.songArtworkOutput)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
-        private System.Windows.Forms.Button cmdRecord;
-        private System.Windows.Forms.Button cmdStop;
         private System.Windows.Forms.Label lblMeterIn;
         private System.Windows.Forms.Label lblMeter;
         private System.Windows.Forms.Timer tmrMeterIn;
-        private System.Windows.Forms.GroupBox grpDestinationFile;
         private System.Windows.Forms.Label lblDestinationFile;
         private System.Windows.Forms.GroupBox grpID3Tags;
         private System.Windows.Forms.Label lblTagComment;
@@ -563,10 +539,6 @@
         private System.Windows.Forms.Label lblAudioSource;
         private System.Windows.Forms.ComboBox cboBitrate;
         private System.Windows.Forms.ComboBox cboAudioSource;
-        private System.Windows.Forms.Label lblSize;
-        private System.Windows.Forms.Label lblSizeIn;
-        private System.Windows.Forms.Label lblTimeIn;
-        private System.Windows.Forms.Label lblTime;
         private System.Windows.Forms.Button recognizeButton;
         private System.Windows.Forms.NotifyIcon trayIcon;
         private System.Windows.Forms.ContextMenuStrip trayMenuStrip;
@@ -575,5 +547,11 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem3;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.PictureBox songArtworkOutput;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
     }
 }

@@ -119,8 +119,6 @@ namespace MusicRecognizer
 
         private void audioRecorder1_RecordProgress(object sender, CSAudioRecorder.ProgressArgs e)
         {
-            lblSizeIn.Text = audioRecorder1.TotalSizeIn;
-            lblTimeIn.Text = audioRecorder1.TotalTimeIn;
         }
 
         private void SetDestinationFileName()
@@ -206,7 +204,6 @@ namespace MusicRecognizer
 
         void EnableDisableControls(bool state)
         {
-            cmdRecord.Enabled = state;
         }
 
         private void frmAudioRecorder_FormClosing(object sender, FormClosingEventArgs e)
@@ -231,9 +228,9 @@ namespace MusicRecognizer
         private void recognizeButton_Click(object sender, EventArgs e)
         {
             showBalloon("Music Recognizer", "Recording...");
-            cmdRecord_Click(cmdRecord, EventArgs.Empty);
+            cmdRecord_Click(null, EventArgs.Empty);
             WaitNSeconds(3);
-            cmdStop_Click(cmdStop, EventArgs.Empty);
+            cmdStop_Click(null, EventArgs.Empty);
             WaitNSeconds(1);
             try
             {
@@ -246,6 +243,7 @@ namespace MusicRecognizer
                     this.songTimestampOutput.Text = data.result.timecode;
                     this.songLinkOutput.Text = data.result.song_link;
                     this.songArtistOutput.Text = data.result.artist;
+                    //this.songArtworkOutput.Load(data.result.app_music.artwork.url);
                     string music = this.songTitleOutput.Text + " - " + this.songArtistOutput.Text;
                     showBalloon("Music Recognizer", music + "\nClick to open in browser. ");
                 }
@@ -256,6 +254,7 @@ namespace MusicRecognizer
                     this.songTimestampOutput.Text = "";
                     this.songLinkOutput.Text = "";
                     this.songArtistOutput.Text = "";
+                    this.songArtworkOutput.Load("");
                     showBalloon("Music Recognizer", "Couldn't recognize song.");
                 }
             } catch
@@ -365,6 +364,31 @@ namespace MusicRecognizer
         private void toolStripMenuItem3_Click(object sender, EventArgs e)
         {
             Application.Exit();
+        }
+
+        private void lblTimeIn_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void songTimestampOutput_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void grpID3Tags_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
