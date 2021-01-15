@@ -1,2 +1,10 @@
 
 MusicRecognizer/Constants.cs
+
+MusicRecognizer/bin/Debug/
+
+MusicRecognizer/bin/Release/
+
+MusicRecognizer/obj/Debug/
+
+MusicRecognizer/obj/Release/
