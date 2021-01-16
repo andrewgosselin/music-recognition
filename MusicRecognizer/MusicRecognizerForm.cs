@@ -129,7 +129,6 @@ namespace MusicRecognizer
             this.songLinkOutput.Text = "";
             this.songArtistOutput.Text = "";
             this.songSpotifyUriOutput.Text = "";
-            Console.WriteLine("Test: ", audd.apiResult);
             if (result == "success")
             {
                 dynamic data = this.audd.latestSong;
@@ -144,7 +143,10 @@ namespace MusicRecognizer
                 this.songTimestampOutput.Text = data.result.timecode;
                 this.songLinkOutput.Text = data.result.song_link;
                 this.songArtistOutput.Text = data.result.artist;
-                this.songSpotifyUriOutput.Text = data.result.spotify.uri;
+                if (data.result.spotify != null)
+                {
+                    this.songSpotifyUriOutput.Text = data.result.spotify.uri ?? "";
+                }
                 string music = this.songTitleOutput.Text + " - " + this.songArtistOutput.Text;
                 showBalloon("Music Recognizer", music + "\nClick to open in browser.");
             } else if (result == "failed") {
