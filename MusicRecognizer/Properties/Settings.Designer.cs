@@ -22,5 +22,65 @@ namespace MusicRecognizer.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool startWithWindows {
+            get {
+                return ((bool)(this["startWithWindows"]));
+            }
+            set {
+                this["startWithWindows"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool startInTray {
+            get {
+                return ((bool)(this["startInTray"]));
+            }
+            set {
+                this["startInTray"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool sourceSpotify {
+            get {
+                return ((bool)(this["sourceSpotify"]));
+            }
+            set {
+                this["sourceSpotify"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool sourceAppleMusic {
+            get {
+                return ((bool)(this["sourceAppleMusic"]));
+            }
+            set {
+                this["sourceAppleMusic"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-1")]
+        public int audioSource {
+            get {
+                return ((int)(this["audioSource"]));
+            }
+            set {
+                this["audioSource"] = value;
+            }
+        }
     }
 }

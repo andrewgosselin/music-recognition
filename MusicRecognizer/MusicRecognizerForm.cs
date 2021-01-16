@@ -26,21 +26,43 @@ namespace MusicRecognizer
     using System.Threading;
     using System.Threading.Tasks;
     using System.Windows.Forms;
+    using Microsoft.Win32;
 
     public partial class MusicRecognizerForm : Form
     {
         private CSAudioRecorder.AudioRecorder audioRecorder1;
-        private string lastFile;
-        private dynamic lastSong = null;
+        private Audd audd = null;
+        private bool running = false;
 
         public MusicRecognizerForm()
         {
             InitializeComponent();
+            
             this.audioRecorder1 = new CSAudioRecorder.AudioRecorder();
-            this.audioRecorder1.RecordProgress += new CSAudioRecorder.OnRecordProgressEventHandler(this.audioRecorder1_RecordProgress);
-            this.audioRecorder1.RecordError += new CSAudioRecorder.OnRecordErrorEventHandler(this.audioRecorder1_RecordError);
-            this.audioRecorder1.RecordDone += new System.EventHandler(this.audioRecorder1_RecordDone);
-            this.audioRecorder1.RecordStart += new System.EventHandler(this.audioRecorder1_RecordStart);
+            cboAudioSource.DataSource = audioRecorder1.GetDevices(CSAudioRecorder.Mode.WasapiLoopbackCapture);
+            CSAudioRecorder.Mode mode = CSAudioRecorder.Mode.WasapiLoopbackCapture;
+            cboAudioSource.DataSource = audioRecorder1.GetDevices(mode);
+            int default_device_index = audioRecorder1.GetDeviceDefaultIndex(mode);
+            if (default_device_index != -1)
+                cboAudioSource.SelectedIndex = default_device_index;
+            else
+                cboAudioSource.SelectedIndex = 0;
+
+            this.sourceSpotifyCheckbox.Checked = (bool)Properties.Settings.Default["sourceSpotify"];
+            this.sourceAppleMusicCheckbox.Checked = (bool)Properties.Settings.Default["sourceAppleMusic"];
+            this.startWithWindowsCheckbox.Checked = (bool)Properties.Settings.Default["startWithWindows"];
+            this.startInTrayCheckbox.Checked = (bool)Properties.Settings.Default["startInTray"];
+            if ((int)Properties.Settings.Default["audioSource"] >= 0)
+            {
+                this.cboAudioSource.SelectedIndex = (int)Properties.Settings.Default["audioSource"];
+            }
+            SetStartup(startWithWindowsCheckbox.Checked);
+
+            if(this.startInTrayCheckbox.Checked)
+            {
+                this.WindowState = FormWindowState.Minimized;
+            }
+
         }
 
         private void frmAudioRecorder_Load(object sender, EventArgs e)
@@ -48,164 +70,9 @@ namespace MusicRecognizer
 
             #region LoadAudioProperties
 
-            //Formats:
-            cboDestinationFormat.DataSource = audioRecorder1.GetFormats();
-            cboDestinationFormat.Text = "MP3";
-
-            //Bitrate
-            cboBitrate.DataSource = audioRecorder1.GetBitrates();
-            cboBitrate.Text = "192";
-
-            //Samplerate
-            cboSamplerate.DataSource = audioRecorder1.GetSamplerates();
-            cboSamplerate.Text = "44100";
-
-            //Bit depth
-            cboBits.DataSource = audioRecorder1.GetBits();
-            cboBits.Text = "16";
-
-            //Channels
-            cboChannels.DataSource  = audioRecorder1.GetChannels();
-            cboChannels.Text = "2";
-
-            //Recorder mode
-            cboRecorderMode.DataSource = audioRecorder1.GetModes();
-            cboRecorderMode.SelectedItem = audioRecorder1.GetEnumValue(audioRecorder1.Mode);
-
             #endregion
 
         }
-
-        private void cboRecorderMode_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            CSAudioRecorder.Mode mode = (CSAudioRecorder.Mode)Enum.Parse(typeof(CSAudioRecorder.Mode), cboRecorderMode.Text);
-            cboAudioSource.DataSource = audioRecorder1.GetDevices(mode);
-            int default_device_index = audioRecorder1.GetDeviceDefaultIndex(mode);
-            if (default_device_index != -1)
-                cboAudioSource.SelectedIndex = default_device_index;
-            else
-                cboAudioSource.SelectedIndex = 0;
-        }
-
-        private void audioRecorder1_RecordDone(object sender, EventArgs e)
-        {
-            if ((cboDestinationFormat.Text != "WAV") && (cboDestinationFormat.Text != "ACM") && (cboDestinationFormat.Text != "AAC"))
-            {
-                if (File.Exists(lblDestinationFile.Text))
-                {
-                    audioRecorder1.TagTitle = "";
-                    audioRecorder1.TagAlbum = "";
-                    audioRecorder1.TagTrack = 1;
-                    audioRecorder1.TagComment = "";
-                    audioRecorder1.TagYear = "";
-                    audioRecorder1.TagCopyright = "";
-                    audioRecorder1.SetID3Tags(lblDestinationFile.Text);
-                }
-            }
-            EnableDisableControls(true);
-            Console.WriteLine("Done.");
-        }
-
-        private void audioRecorder1_RecordError(object sender, CSAudioRecorder.MessageArgs e)
-        {
-            Console.WriteLine(e.Number);
-            Console.WriteLine(e.String);
-        }
-
-        private void audioRecorder1_RecordStart(object sender, EventArgs e)
-        {
-            Console.WriteLine("Start recording...");
-        }
-
-        private void audioRecorder1_RecordProgress(object sender, CSAudioRecorder.ProgressArgs e)
-        {
-        }
-
-        private void SetDestinationFileName()
-        {
-            string sDestinationFile = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic) + "\\out." + cboDestinationFormat.Text.ToLower();
-            if (cboDestinationFormat.Text == "ACM")
-                sDestinationFile = sDestinationFile + ".wav";
-            lblDestinationFile.Text = sDestinationFile;
-            lblDestinationFile.Text = sDestinationFile;
-        }
-
-        private void cmdRecord_Click(object sender, EventArgs e)
-        {
-            if(audioRecorder1.RecordingState == CSAudioRecorder.RecordingState.Recording)
-            {
-                audioRecorder1.Stop();
-
-                while (audioRecorder1.RecordingState != CSAudioRecorder.RecordingState.Ready)
-                {
-                    Application.DoEvents();
-
-                    Thread.Sleep(100);
-                }
-            }
-            SetDestinationFileName();
-            audioRecorder1.FileName = lblDestinationFile.Text;
-
-            this.lastFile = lblDestinationFile.Text;
-            audioRecorder1.AudioSource = cboAudioSource.Text;
-            audioRecorder1.DeviceIndex = cboAudioSource.SelectedIndex;
-            audioRecorder1.Format = (CSAudioRecorder.Format)Enum.Parse(typeof(CSAudioRecorder.Format), cboDestinationFormat.Text);
-            #region MoreOptionalProperties
-            audioRecorder1.Bitrate = (CSAudioRecorder.Bitrate)Enum.Parse(typeof(CSAudioRecorder.Bitrate), cboBitrate.Text);
-            audioRecorder1.Samplerate = (CSAudioRecorder.Samplerate)Enum.Parse(typeof(CSAudioRecorder.Samplerate), cboSamplerate.Text);
-            audioRecorder1.Bits = (CSAudioRecorder.Bits)Enum.Parse(typeof(CSAudioRecorder.Bits), cboBits.Text);
-            audioRecorder1.Channels = (CSAudioRecorder.Channels)Enum.Parse(typeof(CSAudioRecorder.Channels), cboChannels.Text);
-            audioRecorder1.Mode = (CSAudioRecorder.Mode)Enum.Parse(typeof(CSAudioRecorder.Mode), cboRecorderMode.Text);
-            audioRecorder1.Latency = 100;
-            audioRecorder1.StartOnNoiseVal = 1.0f;
-            audioRecorder1.StopOnSilenceVal = 1.0f;
-            audioRecorder1.StopOnSilenceSeconds = 3;
-            #endregion
-            audioRecorder1.Start();
-            tmrMeterIn.Interval = 40;
-            tmrMeterIn.Enabled = true;
-        }
-
-        private void cmdStop_Click(object sender, EventArgs e)
-        {
-            if (audioRecorder1.RecordingState == CSAudioRecorder.RecordingState.Ready)
-                return;
-            EnableDisableControls(false);
-            tmrMeterIn.Enabled = false;
-            audioRecorder1.Stop();
-            recognizeButton.Enabled = true;
-        }
-
-        private void cmdUnPause_Click(object sender, EventArgs e)
-        {
-            audioRecorder1.UnPause();
-        }
-
-        private void cboDestinationFormat_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            SetDestinationFileName();
-            lblBits.Visible = false;
-            cboBits.Visible = false;
-
-            if (cboDestinationFormat.Text == "WAV")
-            {
-                lblBits.Visible = true;
-                cboBits.Visible = true;
-            }
-
-        }
-
-        private void cmdPlayWithDefaultPlayer_Click(object sender, EventArgs e)
-        {
-            if (lblDestinationFile.Text == "") return;
-
-            Process.Start(lblDestinationFile.Text);
-        }
-
-        void EnableDisableControls(bool state)
-        {
-        }
-
         private void frmAudioRecorder_FormClosing(object sender, FormClosingEventArgs e)
         {
             #region SafeExit
@@ -227,59 +94,69 @@ namespace MusicRecognizer
         }
         private void recognizeButton_Click(object sender, EventArgs e)
         {
-            showBalloon("Music Recognizer", "Recording...");
-            cmdRecord_Click(null, EventArgs.Empty);
-            WaitNSeconds(3);
-            cmdStop_Click(null, EventArgs.Empty);
-            WaitNSeconds(1);
-            try
+            if (!running)
             {
-                dynamic data = this.recognizeMusic(this.lastFile);
-                if (data.status == "success")
-                {
-                    lastSong = data.result;
-                    this.songTitleOutput.Text = data.result.title;
-                    this.songAlbumOutput.Text = data.result.album;
-                    this.songTimestampOutput.Text = data.result.timecode;
-                    this.songLinkOutput.Text = data.result.song_link;
-                    this.songArtistOutput.Text = data.result.artist;
-                    //this.songArtworkOutput.Load(data.result.app_music.artwork.url);
-                    string music = this.songTitleOutput.Text + " - " + this.songArtistOutput.Text;
-                    showBalloon("Music Recognizer", music + "\nClick to open in browser. ");
-                }
-                else
-                {
-                    this.songTitleOutput.Text = "";
-                    this.songAlbumOutput.Text = "";
-                    this.songTimestampOutput.Text = "";
-                    this.songLinkOutput.Text = "";
-                    this.songArtistOutput.Text = "";
-                    this.songArtworkOutput.Load("");
-                    showBalloon("Music Recognizer", "Couldn't recognize song.");
-                }
-            } catch
-            {
-                showBalloon("Music Recognizer", "Couldn't recognize song.");
+                this.recognizeMusic();
             }
-            
         }
-        public dynamic recognizeMusic(string filePath)
+        public void recognizeMusic()
         {
-            Console.WriteLine(filePath);
-            string audd_api_key = Constants.audd_api_key;
-            string audd_api_url = Constants.audd_api_url;
-            string audd_api_return = Constants.audd_api_return;
-            Console.WriteLine("ENV: ", audd_api_url);
-            var client = new RestClient(audd_api_url);
-            client.Timeout = -1;
-            var request = new RestRequest(Method.POST);
-            request.AddFile("file", filePath);
-            request.AddParameter("return", audd_api_return);
-            request.AddParameter("api_token", audd_api_key);
-            IRestResponse response = client.Execute(request);
-            dynamic data = JObject.Parse(response.Content);
-            return data;
+            this.running = true;
+            showBalloon("Music Recognizer", "Recording...");
+            string return_type = "";
+            if((bool)Properties.Settings.Default["sourceAppleMusic"])
+            {
+                return_type += "apple_music";
+            } else if((bool)Properties.Settings.Default["sourceSpotify"])
+            {
+                return_type += ",spotify";
+            }
+            this.audd = new Audd(".\\", "out.", "WasapiLoopbackCapture", cboAudioSource.SelectedIndex, "MP3", "44100", return_type);
+            this.audd.startRecording();
+            WaitNSeconds(3);
+            this.audd.stopRecording();
+            WaitNSeconds(1);
+            string result = this.audd.recognize();
+            this.songTitleOutput.Enabled = false;
+            this.songAlbumOutput.Enabled = false;
+            this.songTimestampOutput.Enabled = false;
+            this.songLinkOutput.Enabled = false;
+            this.songArtistOutput.Enabled = false;
+            this.songSpotifyUriOutput.Enabled = false;
+            this.songTitleOutput.Text = "";
+            this.songAlbumOutput.Text = "";
+            this.songTimestampOutput.Text = "";
+            this.songLinkOutput.Text = "";
+            this.songArtistOutput.Text = "";
+            this.songSpotifyUriOutput.Text = "";
+            Console.WriteLine("Test: ", audd.apiResult);
+            if (result == "success")
+            {
+                dynamic data = this.audd.latestSong;
+                this.songTitleOutput.Enabled = true;
+                this.songAlbumOutput.Enabled = true;
+                this.songTimestampOutput.Enabled = true;
+                this.songLinkOutput.Enabled = true;
+                this.songArtistOutput.Enabled = true;
+                this.songSpotifyUriOutput.Enabled = true;
+                this.songTitleOutput.Text = data.result.title;
+                this.songAlbumOutput.Text = data.result.album;
+                this.songTimestampOutput.Text = data.result.timecode;
+                this.songLinkOutput.Text = data.result.song_link;
+                this.songArtistOutput.Text = data.result.artist;
+                this.songSpotifyUriOutput.Text = data.result.spotify.uri;
+                string music = this.songTitleOutput.Text + " - " + this.songArtistOutput.Text;
+                showBalloon("Music Recognizer", music + "\nClick to open in browser.");
+            } else if (result == "failed") {
+                showBalloon("Music Recognizer", "Couldn't recognize song.");
+            } else {
+                showBalloon("Music Recognizer", "Something went wrong, please check your audio settings.");
+            }
+            running = false;
         }
+
+
+
         private void MusicRecognizer_Resize(object sender, EventArgs e)
         {
             if (this.WindowState == FormWindowState.Minimized)
@@ -293,16 +170,6 @@ namespace MusicRecognizer
             recognizeButton_Click(recognizeButton, EventArgs.Empty);
         }
 
-        private void WaitNSeconds(int seconds)
-        {
-            if (seconds < 1) return;
-            DateTime _desired = DateTime.Now.AddSeconds(seconds);
-            while (DateTime.Now < _desired)
-            {
-                Thread.Sleep(1);
-                System.Windows.Forms.Application.DoEvents();
-            }
-        }
 
         private void showBalloon(string title, string body)
         {
@@ -318,11 +185,6 @@ namespace MusicRecognizer
             }
 
             trayIcon.ShowBalloonTip(500);
-        }
-
-        private void historyToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
@@ -343,11 +205,18 @@ namespace MusicRecognizer
 
         private void openLastInBrowser()
         {
+
             try
             {
-                if (lastSong != null)
+                if(this.audd != null)
                 {
-                    System.Diagnostics.Process.Start(lastSong.song_link.ToString());
+                    if (this.audd.latestSong != null)
+                    {
+                        System.Diagnostics.Process.Start(this.audd.latestSong.result.song_link.ToString());
+                    }
+                } else
+                {
+                    showBalloon("Music Recognizer", "You havent recognized a song yet this session.");
                 }
             }
             catch (System.ComponentModel.Win32Exception noBrowser)
@@ -366,29 +235,76 @@ namespace MusicRecognizer
             Application.Exit();
         }
 
-        private void lblTimeIn_Click(object sender, EventArgs e)
+
+        public void WaitNSeconds(int seconds)
         {
+            if (seconds < 1) return;
+            DateTime _desired = DateTime.Now.AddSeconds(seconds);
+            while (DateTime.Now < _desired)
+            {
+                Thread.Sleep(1);
+                System.Windows.Forms.Application.DoEvents();
+            }
+        }
+
+        private void cboAudioSource_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default["audioSource"] = cboAudioSource.SelectedIndex;
+            Properties.Settings.Default.Save();
+        }
+
+        private void startWithWindowsCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default["startWithWindows"] = startWithWindowsCheckbox.Checked;
+            Properties.Settings.Default.Save();
+            SetStartup(startWithWindowsCheckbox.Checked);
+        }
+
+        private void startInTrayCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default["startInTray"] = startInTrayCheckbox.Checked;
+            Properties.Settings.Default.Save();
+        }
+
+        private void sourceSpotify_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default["sourceSpotify"] = sourceSpotifyCheckbox.Checked;
+            if (!sourceSpotifyCheckbox.Checked && !sourceAppleMusicCheckbox.Checked)
+            {
+                sourceAppleMusicCheckbox.Checked = true;
+                Properties.Settings.Default["sourceAppleMusic"] = sourceAppleMusicCheckbox.Checked;
+            }
+            Properties.Settings.Default.Save();
+        }
+
+        private void sourceAppleMusicCheckbox_CheckedChanged(object sender, EventArgs e)
+        {
+            Properties.Settings.Default["sourceAppleMusic"] = sourceAppleMusicCheckbox.Checked;
+            if (!sourceAppleMusicCheckbox.Checked && !sourceSpotifyCheckbox.Checked)
+            {
+                sourceSpotifyCheckbox.Checked = true;
+                Properties.Settings.Default["sourceSpotify"] = sourceSpotifyCheckbox.Checked;
+            }
+            Properties.Settings.Default.Save();
+        }
+
+        private void SetStartup(bool toggle)
+        {
+            if(toggle)
+            {
+                Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+                key.SetValue("Music Recognizer", Application.ExecutablePath);
+            } else
+            {
+                Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+                key.DeleteValue("Music Recognizer", false);
+            }
 
         }
 
-        private void songTimestampOutput_TextChanged(object sender, EventArgs e)
+        private void recognizeCurrentToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void grpID3Tags_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
+            openLastInBrowser();
         }
     }
 }
