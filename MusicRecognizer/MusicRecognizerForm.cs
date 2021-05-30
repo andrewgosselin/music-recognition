@@ -152,6 +152,7 @@ namespace MusicRecognizer
             } else if (result == "failed") {
                 showBalloon("Music Recognizer", "Couldn't recognize song.");
             } else {
+
                 showBalloon("Music Recognizer", "Something went wrong, please check your audio settings.");
             }
             running = false;

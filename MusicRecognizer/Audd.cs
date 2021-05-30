@@ -102,7 +102,7 @@ namespace MusicRecognizer
             {
                 string audd_api_key = Constants.audd_api_key;
                 string audd_api_url = Constants.audd_api_url;
-                string audd_api_return = Constants.audd_api_return;
+                //string audd_api_return = Constants.audd_api_return;
                 var client = new RestClient(audd_api_url);
                 client.Timeout = -1;
                 var request = new RestRequest(Method.POST);
@@ -111,22 +111,28 @@ namespace MusicRecognizer
                 request.AddParameter("api_token", audd_api_key);
                 IRestResponse response = client.Execute(request);
                 dynamic data = JObject.Parse(response.Content);
+                
                 if (data.status == "success" && data.result != null)
                 {
                     this.latestSong = data;
+                    Log.Write("Successfully detected song. " + data.ToString(Newtonsoft.Json.Formatting.None));
                     return "success";
                 }
                 else if (data.status == "success" && data.result == null)
                 {
+                    Log.Write("Song Detection failed. " + data.ToString(Newtonsoft.Json.Formatting.None));
                     return "failed";
                 }
                 else
                 {
+                    Log.Write("Song Detection errored. " + data.ToString(Newtonsoft.Json.Formatting.None));
                     return "error";
                 }
+
             }
-            catch
+            catch (Exception e)
             {
+                Log.Write("Recognize fatal error. " + e.ToString());
                 return "error";
             }
         }
