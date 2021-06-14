@@ -87,6 +87,10 @@
             this.lblMeter.Size = new System.Drawing.Size(100, 23);
             this.lblMeter.TabIndex = 88;
             // 
+            // tmrMeterIn
+            // 
+            this.tmrMeterIn.Tick += new System.EventHandler(this.tmrMeterIn_Tick);
+            // 
             // grpID3Tags
             // 
             this.grpID3Tags.BackColor = System.Drawing.SystemColors.Control;
@@ -285,43 +289,43 @@
             this.toolStripSeparator1,
             this.toolStripMenuItem3});
             this.trayMenuStrip.Name = "trayMenuStrip";
-            this.trayMenuStrip.Size = new System.Drawing.Size(181, 126);
+            this.trayMenuStrip.Size = new System.Drawing.Size(172, 104);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(171, 22);
             this.toolStripMenuItem1.Text = "Open Menu";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.toolStripMenuItem1_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(168, 6);
             // 
             // recognizeCurrentToolStripMenuItem
             // 
             this.recognizeCurrentToolStripMenuItem.Name = "recognizeCurrentToolStripMenuItem";
-            this.recognizeCurrentToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.recognizeCurrentToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.recognizeCurrentToolStripMenuItem.Text = "Recognize Current";
             this.recognizeCurrentToolStripMenuItem.Click += new System.EventHandler(this.recognizeCurrentToolStripMenuItem_Click);
             // 
             // toolStripMenuItem2
             // 
             this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(171, 22);
             this.toolStripMenuItem2.Text = "Open last song";
             this.toolStripMenuItem2.Click += new System.EventHandler(this.toolStripMenuItem2_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(168, 6);
             // 
             // toolStripMenuItem3
             // 
             this.toolStripMenuItem3.Name = "toolStripMenuItem3";
-            this.toolStripMenuItem3.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem3.Size = new System.Drawing.Size(171, 22);
             this.toolStripMenuItem3.Text = "Quit";
             this.toolStripMenuItem3.Click += new System.EventHandler(this.toolStripMenuItem3_Click);
             // 
