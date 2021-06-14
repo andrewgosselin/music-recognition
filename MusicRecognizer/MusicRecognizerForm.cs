@@ -113,7 +113,7 @@ namespace MusicRecognizer
             }
             this.audd = new Audd(".\\", "out.", "WasapiLoopbackCapture", cboAudioSource.SelectedIndex, "MP3", "44100", return_type);
             this.audd.startRecording();
-            WaitNSeconds(3);
+            WaitNSeconds(4);
             this.audd.stopRecording();
             WaitNSeconds(1);
             string result = this.audd.recognize();
@@ -308,6 +308,11 @@ namespace MusicRecognizer
         private void recognizeCurrentToolStripMenuItem_Click(object sender, EventArgs e)
         {
             openLastInBrowser();
+        }
+
+        private void tmrMeterIn_Tick(object sender, EventArgs e)
+        {
+
         }
     }
 }
