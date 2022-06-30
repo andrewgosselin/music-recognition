@@ -2,6 +2,8 @@ Weekly Project #2
 # Music Recognition App
 Detects what song your listening to when clicked in the windows tray.
 
+Currently the compiled version of this app will not work, you must follow the `development environment` section below and pay for the Audd.io subscription.
+
 ## How to use
 1. Download the latest release, extract it to where you want to.
 2. Run the program, configure it how you want.
